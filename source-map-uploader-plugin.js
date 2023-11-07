@@ -78,15 +78,16 @@ class BugsnagSourceMapUploaderPlugin {
           if (this.ignoredBundleExtensions.indexOf(extname(outputChunkLocation)) !== -1) {
             return null
           }
+          const fullUrl = '' +
+          // ensure publicPath has a trailing slash
+          publicPath.replace(/[^/]$/, '$&/') +
+          // remove leading / or ./ from source
+          source.replace(/^\.?\//, '')
 
           return {
             source: outputChunkLocation,
             map: outputSourceMapLocation,
-            url: '' +
-              // ensure publicPath has a trailing slash
-              publicPath.replace(/[^/]$/, '$&/') +
-              // remove leading / or ./ from source
-              source.replace(/^\.?\//, '')
+            url: fullUrl.replace('cdn/', '')
           }
         }).filter(Boolean)
       }
